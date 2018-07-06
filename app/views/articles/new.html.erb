@@ -1,42 +1,45 @@
 <style>
 .input_field{
-  border:1px solid #CCC;
-padding:4px;
-width:300px;
-border-radius:2px;
+	border:1px solid #CCC;
+	padding:4px;
+	width:300px;
+	border-radius:2px;
 }
 .adr_box{
-  width:300px;
-  height:200px;
-  border:1px solid #CCC;
-  padding:4px;
+	width:300px;
+	height:200px;
+	border:1px solid #CCC;
+	padding:4px;
 }
-
 </style>
 <% if user_signed_in? %>
-<h1> New Article </h1>
+	<% @user_id=params[:user_id] %>
+	<% if @user_id.to_i==current_user.id %>
+		<h1> New Article </h1>
+		<%= form_for :article, url: user_articles_path, local: true do |form| %>
 
-<%= form_for :article, url: user_articles_path, local: true do |form| %>
+			<table>
+				<tr>
+					<td><%= form.label :title %></td>
+					<td><%= form.text_field :title , class: "input_field", placeholder: "Enter article Title"%></td>
+				</tr>
 
-<table>
-  <tr>
-    <td><%= form.label :title %></td>
-    <td><%= form.text_field :title , class: "input_field", placeholder: "Enter article Title"%></td>
-  </tr>
- 
-  <tr>
-    <td><%= form.label :text %></td>
-    <td><%= form.text_area :text, class: "adr_box", placeholder: "Enter article here!" %></td>
-  </tr>
- 
-  <tr>
-    <td></td>
-    <td><%= form.submit %></td>
-  </tr>
-<table>
-<% end %>
-<br>Go Back to <%= link_to 'Dashboard', user_articles_path %>
+				<tr>
+					<td><%= form.label :text %></td>
+					<td><%= form.text_area :text, class: "adr_box", placeholder: "Enter article here!" %></td>
+				</tr>
 
+				<tr>
+					<td></td>
+					<td><%= form.submit %></td>
+				</tr>
+			<table>
+		<% end %>
+		<br>Go Back to <%= link_to 'Dashboard', user_articles_path %>
+	<% else %>
+		Access Denied, Logout <%= link_to 'Here', destroy_user_session_path, method: :delete %><br><br>
+		Go Back to <%=link_to 'Dashboard', user_articles_path(current_user.id) %>
+	<% end %>
 <% else %>
-  User is Logged Out, <%= link_to 'Click Here', destroy_user_session_path %> to Login.
+	User is Logged Out, <%= link_to 'Click Here', destroy_user_session_path %> to Login.
 <% end %>

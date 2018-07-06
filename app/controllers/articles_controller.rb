@@ -2,13 +2,13 @@ class ArticlesController < ApplicationController
 
 	def index
 		if user_signed_in?
-			@article=Article.where(:user_id => current_user.id.to_i).all
+			@article = Article.where(:user_id => current_user.id.to_i).all
 		end
 	end
 
-        def new
-		@article=Article.new
-		@user=User.find(current_user.id)
+  def new
+		@article = Article.new
+		@user = User.find(current_user.id)
 	end
 	def create
 		@user = User.find(params[:user_id])
@@ -20,7 +20,7 @@ class ArticlesController < ApplicationController
 		end
 	end
 
-def destroy
+	def destroy
 		@user = User.find(params[:user_id])
 		@article = @user.articles.find(params[:id])
 		@article.destroy

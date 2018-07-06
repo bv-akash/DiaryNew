@@ -1,56 +1,54 @@
 <% if user_signed_in? %>
+	<% @user_id=params[:user_id] %>
+	<% if @user_id.to_i==current_user.id %>
 
-<style>
-h2{
-  color:#888;
-}
-span{color:pink;}
+		<style>
+			h2{
+				  color:#888;
+			}
+			span{color:pink;}
 
-table td{
-	padding:10px;
-	
-}
+			table td{
+					padding:10px;
+			}
+			a{
+				border:1px solid #CCC;
+				padding:7px;
+				margin:10px;
+				color:#000;
+				text-decoration:none;
+				border-radius:5px;
+			}
+			a:hover{
+			  text-decoration:underline;
+			  color:#F00;
+			}
+		</style>
 
+		<h2> Welcome <span><%= current_user.email %></span> </h2>
 
-a{
-border:1px solid #CCC;
-padding:7px;
-margin:10px;
-color:#000;
-text-decoration:none;
-border-radius:5px;
-}
-a:hover{
-  text-decoration:underline;
-  color:#F00;
-}
-</style>
-
-<% @user_id=params[:user_id] %>
-<% if @user_id.to_i==current_user.id %>
-
-<h2> Welcome <span><%= current_user.email %></span> </h2>
-
-<% if @article.count != 0 %>
-	<%= link_to 'Add More Articles', new_user_article_path %>
-	<%= link_to 'Go To Home', root_path %>
-	<%= link_to 'Logout', destroy_user_session_path, method: :delete %>
-	<h2 class="hello"> Articles (<span><%= @article.count %></span>) </h2>
-<% @ind=1 %>
-<table>
-	<tr><th>Article ID</th><th>Article Title</th><th>Article Text</th><th>Action</th></tr>
-<% @article.each do |article| %>
-	<tr><td><%= @ind %></td><td><%= article.title %></td><td><%= article.text %></td><td><%= link_to 'Delete', [article.user, article], method: :delete, data: { confirm: 'Are you sure?' } %></td></tr>
-	<% @ind+=1 %>
-<% end %>
-</table>
-<% else %>
-	<p> You Don't have a Single Article, Create one by clicking <%= link_to 'Here', new_user_article_path %> </p>
-<% end %>
+		<% if @article.count != 0 %>
+			<%= link_to 'Add More Articles', new_user_article_path %>
+			<%= link_to 'Go To Home', root_path %>
+			<%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+			<h2 class="hello"> Articles (<span><%= @article.count %></span>) </h2>
+			<% @ind=1 %>
+		<table>
+			<tr><th> S.No. </th><th>Article Title</th><th>Article Text</th><th>Action</th></tr>
+			<% @article.each do |article| %>
+				<tr><td><%= @ind %></td><td><%= article.title %></td><td><%= article.text %></td><td>
+						<%= link_to 'Delete', [article.user, article], method: :delete, data: { confirm: 'Are you sure?' }
+						%></td></tr>
+				<% @ind+=1 %>
+			<% end %>
+		</table>
+		<% else %>
+			<p> You Don't have a Single Article, Create one by clicking <%= link_to 'Here', new_user_article_path %> </p>
+		<% end %>
 	<%else%>
-	 Access Denied, Logout <%= link_to 'Here', destroy_user_session_path, method: :delete %><br><br>
-	Go Back to <%=link_to 'Dashboard', user_articles_path(current_user.id) %>
-<%end%>
+		Access Denied, Logout <%= link_to 'Here', destroy_user_session_path, method: :delete %><br><br>
+		Go Back to <%=link_to 'Dashboard', user_articles_path(current_user.id) %>
+	<%end%>
 <% else %>
   User is Logged Out, <%= link_to 'Click Here', new_user_session_path %> to Login.
 <% end %>
